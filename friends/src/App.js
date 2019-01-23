@@ -1,25 +1,38 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import axios from 'axios'
+import { Route } from 'react-router-dom';
 
 class App extends Component {
+  state = {
+    friends: [],
+    error: ''
+  }
+
+  componentDidMount() {
+    axios.get('http://localhost:5000/friends')
+      .then(res => {
+        this.setState({
+          friends: res.data
+        })
+      })
+      .catch(err => {
+        this.setState({
+          error: err.response.data.message
+        })
+      })
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        {this.state.friends.map(friend => (
+          <div className="info">
+            <h1>{friend.name}</h1>
+            <h3>{friend.age}</h3>
+            <h4>{friend.email}</h4>
+          </div>
+        ))}
       </div>
     );
   }
