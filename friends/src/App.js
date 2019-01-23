@@ -29,8 +29,8 @@ class App extends Component {
         {this.state.friends.map(friend => (
           <div className="info">
             <h1>{friend.name}</h1>
-            <h3>{friend.age}</h3>
-            <h4>{friend.email}</h4>
+            <h3>Age: {friend.age}</h3>
+            <h4>Email: {friend.email}</h4>
           </div>
         ))}
       </div>
