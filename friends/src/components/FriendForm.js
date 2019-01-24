@@ -3,7 +3,7 @@ import React from 'react'
 
 
 const FriendForm = props => {
-    
+
     const handleSubmit = e => {
         e.preventDefault();
         if (props.isUpdating) {
@@ -39,7 +39,7 @@ const FriendForm = props => {
                 value={props.friend.email} 
                 onChange={props.handleChange} 
             />
-            <button type="submit">Add to Friends List!</button>
+            <button type="submit">{props.isUpdating ? 'Update ' : 'Add '}Friend</button>
         </form>
     )
 }

@@ -105,7 +105,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Link to='/add'>Add Friend</Link>
+        <Link to='/add'>{this.state.isUpdating ? 'Update ' : 'Add '}Friend</Link>
         <Link to='/'>Home</Link>
         <Route 
           exact 
