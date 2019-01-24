@@ -50,7 +50,7 @@ class App extends Component {
     });
   }
 
-  handleSubmit = e => {
+  addItem = e => {
     console.log('here');
     e.preventDefault();
     axios.post('http://localhost:5000/friends', this.state.friend)
@@ -62,7 +62,22 @@ class App extends Component {
         this.props.history.push('/');
       })
       .catch(err => {
+        console.log(err);
       })
+  }
+
+  deleteItem = (e, id) => {
+    e.preventDefault();
+    axios.delete(`http://localhost:5000/friends/${id}`)
+    .then(res => {
+      this.setState({
+        friends: res.data
+      })
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
   }
 
   render() {
@@ -73,11 +88,11 @@ class App extends Component {
         <Route 
           exact 
           path="/" 
-          render={props => <FriendsList {...props} friends={this.state.friends} />} 
+          render={props => <FriendsList {...props} friends={this.state.friends} deleteItem={this.deleteItem} />} 
         />
         <Route 
           path="/add"
-          render={props => <FriendForm {...props} friend={this.state.friend} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />} 
+          render={props => <FriendForm {...props} friend={this.state.friend} handleChange={this.handleChange} addItem={this.addItem} />} 
         />
         
       </div>
