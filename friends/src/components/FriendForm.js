@@ -1,8 +1,20 @@
 import React from 'react'
 
+
+
 const FriendForm = props => {
+    
+    const handleSubmit = e => {
+        e.preventDefault();
+        if (props.isUpdating) {
+            props.updateItem();
+        } else {
+            props.addItem();
+        }
+    }
+
     return (
-        <form onSubmit={props.addItem}>
+        <form onSubmit={handleSubmit}>
             <input 
                 required
                 type='text' 

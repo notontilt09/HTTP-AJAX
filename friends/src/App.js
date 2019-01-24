@@ -51,9 +51,7 @@ class App extends Component {
     });
   }
 
-  addItem = e => {
-    console.log('here');
-    e.preventDefault();
+  addItem = () => {
     axios.post('http://localhost:5000/friends', this.state.friend)
       .then(res => {
         this.setState({
@@ -86,7 +84,22 @@ class App extends Component {
       friend: this.state.friends.find(friend => friend.id === id),
       isUpdating: true
     })
-    this.props.history.push('./add')
+    this.props.history.push('/add')
+  }
+
+  updateItem = () => {
+    axios.put(`http://localhost:5000/friends/${this.state.friend.id}`, this.state.friend)
+    .then(res => {
+      this.setState({
+        friends: res.data,
+        isUpdating: false,
+        friend: emptyFriend
+      })
+      this.props.history.push('/');
+    })
+    .catch(err => {
+      console.log(err)
+    })
   }
 
   render() {
@@ -107,7 +120,15 @@ class App extends Component {
         />
         <Route 
           path="/add"
-          render={props => <FriendForm {...props} friend={this.state.friend} handleChange={this.handleChange} addItem={this.addItem} />} 
+          render={props => 
+            <FriendForm 
+              {...props} 
+              friend={this.state.friend} 
+              handleChange={this.handleChange} 
+              addItem={this.addItem} 
+              updateItem={this.updateItem}  
+              isUpdating={this.state.isUpdating}
+            />} 
         />
         
       </div>
