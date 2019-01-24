@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
+import { Route, Link } from 'react-router-dom'
 
 import FriendsList from './components/FriendsList';
+import FriendForm from './components/FriendForm';
+
+const emptyFriend = {
+  name: '',
+  age: '',
+  email: ''
+}
 
 
 class App extends Component {
   state = {
     friends: [],
-    error: ''
+    error: '',
+    friend: emptyFriend
   }
 
   // using axios to get data from local server
@@ -29,9 +38,49 @@ class App extends Component {
       })
   }
 
+  handleChange = e => {
+    e.persist();
+    this.setState(prevState => {
+      return {
+        friend: {
+          ...prevState.friend,
+          [e.target.name] : e.target.value
+        }
+      };
+    });
+  }
+
+  handleSubmit = e => {
+    console.log('here');
+    e.preventDefault();
+    axios.post('http://localhost:5000/friends', this.state.friend)
+      .then(res => {
+        this.setState({
+          friends: res.data,
+          friend: emptyFriend
+        });
+        this.props.history.push('/');
+      })
+      .catch(err => {
+      })
+  }
+
   render() {
     return (
-      <FriendsList friends={this.state.friends}/>
+      <div>
+        <Link to='/add'>Add Friend</Link>
+        <Link to='/'>Home</Link>
+        <Route 
+          exact 
+          path="/" 
+          render={props => <FriendsList {...props} friends={this.state.friends} />} 
+        />
+        <Route 
+          path="/add"
+          render={props => <FriendForm {...props} friend={this.state.friend} handleChange={this.handleChange} handleSubmit={this.handleSubmit} />} 
+        />
+        
+      </div>
     );
   }
 }
