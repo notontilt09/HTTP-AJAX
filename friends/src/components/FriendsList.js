@@ -10,6 +10,7 @@ const FriendsList = props => {
             <h4>Email: {friend.email}</h4>
             <div>
                <button onClick={(e) => props.deleteItem(e, friend.id)}>Delete Friend</button>
+               <button onClick={(e) => props.populateForm(e, friend.id)}>Update Friend</button>
            </div>
           </div>
         ))}

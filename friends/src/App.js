@@ -17,7 +17,8 @@ class App extends Component {
   state = {
     friends: [],
     error: '',
-    friend: emptyFriend
+    friend: emptyFriend,
+    isUpdating: false
   }
 
   // using axios to get data from local server
@@ -77,7 +78,15 @@ class App extends Component {
     .catch(err => {
       console.log(err)
     })
+  }
 
+  populateForm = (e, id) => {
+    e.preventDefault();
+    this.setState({
+      friend: this.state.friends.find(friend => friend.id === id),
+      isUpdating: true
+    })
+    this.props.history.push('./add')
   }
 
   render() {
@@ -88,7 +97,13 @@ class App extends Component {
         <Route 
           exact 
           path="/" 
-          render={props => <FriendsList {...props} friends={this.state.friends} deleteItem={this.deleteItem} />} 
+          render={props => 
+            <FriendsList 
+              {...props} 
+              friends={this.state.friends} 
+              deleteItem={this.deleteItem} 
+              populateForm={this.populateForm}  
+            />} 
         />
         <Route 
           path="/add"
